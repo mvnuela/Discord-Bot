@@ -11,13 +11,20 @@ async def on_ready():
     print('Connected to bot: {}'.format(eventBot.user.name))
     print('Bot ID: {}'.format(eventBot.user.id))
 @eventBot.command()
-async def addEvent(ctx,name,category,data):
-    newEvent=MyEvent(name,category,data)
-    newEvent.addToDB()
-    await ctx.send('Dodano wydarzenie '+name+" "+category+" "+data)
+async def addEvent(ctx,name,date,time,place):
+    newEvent=MyEvent(name,date,time,place)
+    if(newEvent.addToDB()):
+        await ctx.send('Dodano wydarzenie '+name+" "+date+" "+time+ " "+place)
+    else:
+        await ctx.send("Nie udało się dodać wydarzenia")
 @eventBot.command()
 
-async def deleteEvent(ctx,name,category,data):
-    await ctx.send('Usunięto wydarzenie '+name+" "+category+" "+data)
+async def deleteEvent(ctx,name,date,time,place):
+    newEvent = MyEvent(name, date, time, place)
+    if (newEvent.deleteFromDB()):
+        await ctx.send('Usunięto wydarzenie '+name+" "+date+" "+time + " " +place)
+    else:
+        await ctx.send('Wskazane wydarzenie nie znajduje sie w bazie')
+
 
 eventBot.run(TOKEN)

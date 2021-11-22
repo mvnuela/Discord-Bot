@@ -1,10 +1,15 @@
+from Database import Database
 class MyEvent:
-    def __init__(self,n,cat,dat):
+    def __init__(self,n,dat,ti,pl):
         self.name=n
-        self.category=cat
-        self.data=dat
+        self.date=dat
+        self.place=pl
+        self.time = ti
 
     def addToDB(self):
-        print("Dodano do bazy")
+        newinstance = Database()
+        return newinstance.addEvent(self.name,self.date,self.time,self.place)
+
     def deleteFromDB(self):
-        print("Usunieto z bazy")
+        newinstance = Database()
+        return newinstance.rmEvent(self.name, self.date,self.time, self.place)
