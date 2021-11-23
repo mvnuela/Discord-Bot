@@ -69,3 +69,22 @@ class Database:
             cursor.close()
             self.conn.close()
             return succes
+    def getEvents(self,firstDate,lastDate):
+        query = "SELECT Name, Date, Time, Place FROM events  WHERE Date >= %s AND Date <= %s"
+        args = (firstDate,lastDate)
+
+        try:
+
+            cursor = self.conn.cursor(True)
+            cursor.execute(query, args)
+            self.conn.commit()
+            print("Get from database")
+            ans = list(cursor.fetchall())
+        except Error as error:
+            print(error)
+            print("Something wrong")
+
+        finally:
+            cursor.close()
+            self.conn.close()
+            return ans
