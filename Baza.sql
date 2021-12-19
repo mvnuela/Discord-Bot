@@ -53,6 +53,7 @@ CREATE TABLE IF NOT EXISTS `classes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Zrzucanie danych dla tabeli discordbot.classes: ~0 rows (około)
+DELETE FROM `classes`;
 /*!40000 ALTER TABLE `classes` DISABLE KEYS */;
 /*!40000 ALTER TABLE `classes` ENABLE KEYS */;
 
@@ -67,6 +68,7 @@ CREATE TABLE IF NOT EXISTS `classesusers` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Zrzucanie danych dla tabeli discordbot.classesusers: ~0 rows (około)
+DELETE FROM `classesusers`;
 /*!40000 ALTER TABLE `classesusers` DISABLE KEYS */;
 /*!40000 ALTER TABLE `classesusers` ENABLE KEYS */;
 
@@ -74,16 +76,23 @@ CREATE TABLE IF NOT EXISTS `classesusers` (
 CREATE TABLE IF NOT EXISTS `events` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(90) DEFAULT NULL,
-  `Date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `Date` date NOT NULL DEFAULT '0000-00-00',
+  `Time` time NOT NULL DEFAULT '00:00:00',
   `Place` varchar(90) DEFAULT NULL,
   `HostId` int(11) DEFAULT NULL,
   PRIMARY KEY (`Id`),
   KEY `HostId` (`HostId`),
   CONSTRAINT `events_ibfk_1` FOREIGN KEY (`HostId`) REFERENCES `users` (`Id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
--- Zrzucanie danych dla tabeli discordbot.events: ~0 rows (około)
+-- Zrzucanie danych dla tabeli discordbot.events: ~4 rows (około)
+DELETE FROM `events`;
 /*!40000 ALTER TABLE `events` DISABLE KEYS */;
+INSERT INTO `events` (`Id`, `Name`, `Date`, `Time`, `Place`, `HostId`) VALUES
+	(3, 'kolokwium', '2022-01-10', '12:12:12', 'Wroclaw', NULL),
+	(4, 'kolokwium', '2022-01-22', '12:12:12', 'Wroclaw', NULL),
+	(6, 'Egzamin', '2022-01-16', '12:12:12', 'Wroclaw', NULL),
+	(7, 'kolokwium', '2021-11-19', '12:00:00', 'c1', NULL);
 /*!40000 ALTER TABLE `events` ENABLE KEYS */;
 
 -- Zrzut struktury tabela discordbot.users
@@ -95,6 +104,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Zrzucanie danych dla tabeli discordbot.users: ~0 rows (około)
+DELETE FROM `users`;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
