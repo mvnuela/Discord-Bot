@@ -88,3 +88,44 @@ class Database:
             cursor.close()
             self.conn.close()
             return ans
+
+    def getDay(self, day, Id):
+        try:
+
+            cursor = self.conn.cursor(True)
+            cursor.callproc('showDay', [day,Id, ])
+            self.conn.commit()
+            print("Get from database")
+            ans = list()
+            for result in cursor.stored_results():
+                ans.append(result.fetchall())
+        except Error as error:
+            print(error)
+            print("Something wrong")
+
+        finally:
+            cursor.close()
+            self.conn.close()
+            return ans
+
+        pass
+
+    def getWeekd(self, day, Id):
+        try:
+
+            cursor = self.conn.cursor(True)
+            cursor.callproc('showWeek', [day,Id, ])
+            self.conn.commit()
+            print("Get from database")
+            ans = list()
+            for result in cursor.stored_results():
+                ans.append(result.fetchall())
+        except Error as error:
+            print(error)
+            print("Something wrong")
+
+        finally:
+            cursor.close()
+            self.conn.close()
+            return ans
+        pass

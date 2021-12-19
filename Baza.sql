@@ -16,6 +16,42 @@
 CREATE DATABASE IF NOT EXISTS `discordbot` /*!40100 DEFAULT CHARACTER SET latin1 */;
 USE `discordbot`;
 
+-- Zrzut struktury procedura discordbot.addClasses
+DELIMITER //
+CREATE PROCEDURE `addClasses`(
+	IN `n` VARCHAR(90),
+	IN `d` DATE,
+	IN `ts` TIME,
+	IN `te` TIME,
+	IN `p` VARCHAR(90),
+	IN `c` ENUM('temporary','test','exam','exercises')
+)
+BEGIN
+INSERT INTO classes(NAME,DATE,TIMESTART,TIMEEND,PLACE,CATEGORY) VALUES (n,d,ts,te,p,c);
+END//
+DELIMITER ;
+
+-- Zrzut struktury procedura discordbot.addClasUser
+DELIMITER //
+CREATE PROCEDURE `addClasUser`(
+	IN `cid` INT,
+	IN `uid` INT
+)
+BEGIN
+INSERT INTO classesusers(ClassID,UserId) VALUES (cid,uid);
+END//
+DELIMITER ;
+
+-- Zrzut struktury procedura discordbot.addUser
+DELIMITER //
+CREATE PROCEDURE `addUser`(
+	IN `name` VARCHAR(90)
+)
+BEGIN
+INSERT INTO users (Nick) VALUES(NAME);
+END//
+DELIMITER ;
+
 -- Zrzut struktury funkcja discordbot.checkIfClassIsTemporary
 DELIMITER //
 CREATE FUNCTION `checkIfClassIsTemporary`(classId int) RETURNS tinyint(4)
@@ -46,15 +82,22 @@ DELIMITER ;
 CREATE TABLE IF NOT EXISTS `classes` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(90) DEFAULT NULL,
-  `Date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `Date` date NOT NULL DEFAULT '0000-00-00',
+  `TimeStart` time NOT NULL DEFAULT '00:00:00',
+  `TimeEnd` time NOT NULL DEFAULT '00:00:00',
   `Place` varchar(90) DEFAULT NULL,
   `Category` enum('test','exam','exercises','temporary') DEFAULT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
--- Zrzucanie danych dla tabeli discordbot.classes: ~0 rows (około)
+-- Zrzucanie danych dla tabeli discordbot.classes: ~3 rows (około)
 DELETE FROM `classes`;
 /*!40000 ALTER TABLE `classes` DISABLE KEYS */;
+INSERT INTO `classes` (`Id`, `Name`, `Date`, `TimeStart`, `TimeEnd`, `Place`, `Category`) VALUES
+	(1, 'Wprowadzenie do Teorii Grafow', '2021-12-13', '13:15:00', '15:00:00', 'C-1', 'temporary'),
+	(2, 'Wprowadzenie do Teorii Grafow', '2021-12-13', '17:05:00', '18:45:00', 'C-5', 'exercises'),
+	(3, 'Jezyki Formalne i teoria trans', '2021-12-21', '17:05:00', '18:45:00', 'C-5', 'temporary'),
+	(4, 'Wprowadzenie do sztucznej Inteligencji', '2021-12-14', '17:05:00', '18:45:00', 'C-5', 'temporary');
 /*!40000 ALTER TABLE `classes` ENABLE KEYS */;
 
 -- Zrzut struktury tabela discordbot.classesusers
@@ -67,9 +110,14 @@ CREATE TABLE IF NOT EXISTS `classesusers` (
   CONSTRAINT `classesusers_ibfk_2` FOREIGN KEY (`UserId`) REFERENCES `users` (`Id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Zrzucanie danych dla tabeli discordbot.classesusers: ~0 rows (około)
+-- Zrzucanie danych dla tabeli discordbot.classesusers: ~2 rows (około)
 DELETE FROM `classesusers`;
 /*!40000 ALTER TABLE `classesusers` DISABLE KEYS */;
+INSERT INTO `classesusers` (`ClassId`, `UserId`) VALUES
+	(1, 1),
+	(3, 1),
+	(4, 1),
+	(2, 1);
 /*!40000 ALTER TABLE `classesusers` ENABLE KEYS */;
 
 -- Zrzut struktury tabela discordbot.events
@@ -95,17 +143,56 @@ INSERT INTO `events` (`Id`, `Name`, `Date`, `Time`, `Place`, `HostId`) VALUES
 	(7, 'kolokwium', '2021-11-19', '12:00:00', 'c1', NULL);
 /*!40000 ALTER TABLE `events` ENABLE KEYS */;
 
+-- Zrzut struktury procedura discordbot.showDay
+DELIMITER //
+CREATE PROCEDURE `showDay`(
+	IN `d` DATE,
+	IN `id` INT
+)
+BEGIN
+
+SELECT classes.Name,  classes.Date, classes.TimeStart, classes.TimeEnd, classes.Place, classes.Category
+FROM classes INNER JOIN classesusers 
+	ON classesusers.ClassId = classes.Id 
+INNER JOIN users ON
+	users.Id = classesusers.UserId
+WHERE classes.Date = d AND users.Id = id;
+
+END//
+DELIMITER ;
+
+-- Zrzut struktury procedura discordbot.showWeek
+DELIMITER //
+CREATE PROCEDURE `showWeek`(
+	IN `d` DATE,
+	IN `id` INT
+)
+BEGIN
+
+SELECT classes.Name,  classes.Date, classes.TimeStart, classes.TimeEnd, classes.Place, classes.Category
+FROM classes INNER JOIN classesusers 
+	ON classesusers.ClassId = classes.Id 
+INNER JOIN users ON
+	users.Id = classesusers.UserId
+WHERE classes.Date >= d AND classes.Date <= d+7 AND users.Id = id;
+
+
+END//
+DELIMITER ;
+
 -- Zrzut struktury tabela discordbot.users
 CREATE TABLE IF NOT EXISTS `users` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `Nick` varchar(90) NOT NULL,
   PRIMARY KEY (`Id`),
   UNIQUE KEY `Nick` (`Nick`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
--- Zrzucanie danych dla tabeli discordbot.users: ~0 rows (około)
+-- Zrzucanie danych dla tabeli discordbot.users: ~1 rows (około)
 DELETE FROM `users`;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` (`Id`, `Nick`) VALUES
+	(1, 'Cybulski');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
