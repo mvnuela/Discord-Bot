@@ -27,7 +27,9 @@ async def calendar(ctx):
         fil=None
         name=ctx.message.attachments[0].filename
         data = await ctx.message.attachments[0].read()
-        converter.ics(data) #przerzut do konwersji(w konwersji też jest dodawanie do bazy)
+        data1=str(data)
+        Con = converter(data1)
+        Con.ics(data1) #przerzut do konwersji(w konwersji też jest dodawanie do bazy)
 
 @eventBot.command()
 async def showEvents(ctx, firstDate, lastDate):
