@@ -4,10 +4,7 @@ from discord.ext import commands
 
 from Database import Database
 from MyEvent import MyEvent
-from csv_ical import Convert
-
-# csv_ical ma niby ładnie konwertować do csva
-
+from converter import converter
 
 TOKEN="OTExMzQ3Mzk0MjU0MzQwMTI3.YZgEZg.uGCZhDpqjURs5BjapiZCxhY7awM"
 #prefixdo wywolania bota
@@ -29,7 +26,8 @@ async def calendar(ctx):
     if ctx.message.attachments[0].filename.endswith(".ics"):
         fil=None
         name=ctx.message.attachments[0].filename
-        data = await ctx.message.attachments[0].read() #tutaj jest zapisany content icsa
+        data = await ctx.message.attachments[0].read()
+        converter.ics(data) #przerzut do konwersji(w konwersji też jest dodawanie do bazy)
 
 @eventBot.command()
 async def showEvents(ctx, firstDate, lastDate):
@@ -52,7 +50,7 @@ async def showDay(ctx,day,Id):
     Events = newinstance.getDay(day,Id)
     for e in Events[0]:
         await ctx.send(e[0] + " " + e[1].strftime("%Y-%m-%d") + " " + str(e[2]) + " " + str(e[3])
-                       + " " + e[4] + " " + e[5])
+                       + " " + e[4])
 @eventBot.command()
 async def showWeek(ctx,day,Id):
     newinstance = Database()

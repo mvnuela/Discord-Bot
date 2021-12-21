@@ -86,18 +86,17 @@ CREATE TABLE IF NOT EXISTS `classes` (
   `TimeStart` time NOT NULL DEFAULT '00:00:00',
   `TimeEnd` time NOT NULL DEFAULT '00:00:00',
   `Place` varchar(90) DEFAULT NULL,
-  `Category` enum('test','exam','exercises','temporary') DEFAULT NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 -- Zrzucanie danych dla tabeli discordbot.classes: ~3 rows (około)
 DELETE FROM `classes`;
 /*!40000 ALTER TABLE `classes` DISABLE KEYS */;
-INSERT INTO `classes` (`Id`, `Name`, `Date`, `TimeStart`, `TimeEnd`, `Place`, `Category`) VALUES
-	(1, 'Wprowadzenie do Teorii Grafow', '2021-12-13', '13:15:00', '15:00:00', 'C-1', 'temporary'),
-	(2, 'Wprowadzenie do Teorii Grafow', '2021-12-13', '17:05:00', '18:45:00', 'C-5', 'exercises'),
-	(3, 'Jezyki Formalne i teoria trans', '2021-12-21', '17:05:00', '18:45:00', 'C-5', 'temporary'),
-	(4, 'Wprowadzenie do sztucznej Inteligencji', '2021-12-14', '17:05:00', '18:45:00', 'C-5', 'temporary');
+INSERT INTO `classes` (`Id`, `Name`, `Date`, `TimeStart`, `TimeEnd`, `Place`) VALUES
+	(1, 'Wprowadzenie do Teorii Grafow', '2021-12-13', '13:15:00', '15:00:00', 'C-1'),
+	(2, 'Wprowadzenie do Teorii Grafow', '2021-12-13', '17:05:00', '18:45:00', 'C-5'),
+	(3, 'Jezyki Formalne i teoria trans', '2021-12-21', '17:05:00', '18:45:00', 'C-5'),
+	(4, 'Wprowadzenie do sztucznej Inteligencji', '2021-12-14', '17:05:00', '18:45:00', 'C-5');
 /*!40000 ALTER TABLE `classes` ENABLE KEYS */;
 
 -- Zrzut struktury tabela discordbot.classesusers
