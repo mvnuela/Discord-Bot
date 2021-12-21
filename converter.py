@@ -6,8 +6,8 @@ class converter:
 
     def ics(self, data):
         icsList = data.split("BEGIN:VEVENT")
-        newinstance = Database()
         for i in range(1, len(icsList)):
+            newinstance = Database()
             x = icsList[i]
             datePosition1 = x.find("DTSTART:") + 8
             datePosition2 = datePosition1 + 8
@@ -28,7 +28,7 @@ class converter:
             summaryPosition2 = x.find("TRANSP:") + 1
             lesson = x[summaryPosition1:summaryPosition2]
 
-            Database.addClasses(lesson, date1, timeStart1, timeEnd1, location)
+            newinstance.addClasses( lesson, date1, timeStart1, timeEnd1, location)
 
 
 

@@ -59,7 +59,7 @@ async def showWeek(ctx,day,Id):
     Events = newinstance.getWeekd(day,Id)
     for e in Events[0]:
         await ctx.send(e[0] + " " + e[1].strftime("%Y-%m-%d") + " " + str(e[2]) + " " + str(e[3])
-                       + " " + e[4] + " " + e[5])
+                       + " " + e[4])
 
 
 
