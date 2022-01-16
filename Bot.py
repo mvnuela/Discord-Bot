@@ -50,16 +50,38 @@ async def deleteEvent(ctx,name,date,time,place):
 async def showDay(ctx,day,Id):
     newinstance = Database()
     Events = newinstance.getDay(day,Id)
-    for e in Events[0]:
-        await ctx.send(e[0] + " " + e[1].strftime("%Y-%m-%d") + " " + str(e[2]) + " " + str(e[3])
+    if not Events[0]:
+        await ctx.send('Tego dnia nie ma żadnych zajęć.')
+    else:
+        for e in Events[0]:
+            await ctx.send(e[0] + " " + e[1].strftime("%Y-%m-%d") + " " + str(e[2]) + " " + str(e[3])
                        + " " + e[4])
 @eventBot.command()
 async def showWeek(ctx,day,Id):
     newinstance = Database()
     Events = newinstance.getWeekd(day,Id)
-    for e in Events[0]:
-        await ctx.send(e[0] + " " + e[1].strftime("%Y-%m-%d") + " " + str(e[2]) + " " + str(e[3])
+    if not Events[0]:
+        await ctx.send('W tym nie ma żadnych zajęć.')
+    else:
+        for e in Events[0]:
+            await ctx.send(e[0] + " " + e[1].strftime("%Y-%m-%d") + " " + str(e[2]) + " " + str(e[3])
                        + " " + e[4])
+@eventBot.command()
+async def freeDays(ctx, firstDate, lastDate, Id):
+    newinstance = Database()
+    Events = newinstance.getFreeDays(firstDate, lastDate, Id)
+    if not Events:
+        await ctx.send('Przykro mi, w tym okresie nie masz dni wolnych :(.')
+    else:
+        await ctx.send(Events)
+@eventBot.command()
+async def freeTime(ctx, date, Id):
+    newinstance = Database()
+    Events = newinstance.getFreeTime(date, Id)
+    if not Events:
+        await ctx.send('Przykro mi, w tym okresie nie masz czasu wolnego :(.')
+    else:
+        await ctx.send(Events)
 
 
 
