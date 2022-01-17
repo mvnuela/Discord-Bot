@@ -6,9 +6,12 @@ from Database import Database
 from MyEvent import MyEvent
 from converter import converter
 
+#intents = discord.Intents.all()
+intents = discord.Intents.default()
+intents.members = True
 TOKEN="OTExMzQ3Mzk0MjU0MzQwMTI3.YZgEZg.uGCZhDpqjURs5BjapiZCxhY7awM"
 #prefixdo wywolania bota
-eventBot=commands.Bot(command_prefix='$')
+eventBot=commands.Bot(command_prefix='$', intents=intents)
 
 @eventBot.event
 async def on_ready():
@@ -83,7 +86,36 @@ async def freeTime(ctx, date, Id):
     else:
         await ctx.send(Events)
 
+@eventBot.command()
+async def message_all(ctx, *, args=None):
+    if args !=None:
+        channel = eventBot.get_channel(899711418276917309)
+        members = channel.guild.members
+        print("Lista memberow text")
+        #members = ctx.guild.members
+        for member in members:
+            print(member)
+            try:
+                await member.send(args)
+            except:
+                print("Didn't work for this member (maybe member is a bot).")
+    else:
+        await ctx.send("Please provide an argument!")
 
+@eventBot.command()
+async def attach_all(ctx, *, args=None):
+    if args !=None:
+        channel = eventBot.get_channel(899711418276917309)
+        members = channel.guild.members
+        print("Lista memberow jpg")
+        for member in members:
+            print(member)
+            try:
+                await member.send(file=discord.File(args))
+            except:
+                print("Didn't work for this member (maybe member is a bot).")
+    else:
+        await ctx.send("Please provide a filepath!")
 
 
 eventBot.run(TOKEN)
