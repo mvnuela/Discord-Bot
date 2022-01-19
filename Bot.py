@@ -6,9 +6,12 @@ from Database import Database
 from MyEvent import MyEvent
 from converter import converter
 
+#intents = discord.Intents.all()
+intents = discord.Intents.default()
+intents.members = True
 TOKEN="OTExMzQ3Mzk0MjU0MzQwMTI3.YZgEZg.uGCZhDpqjURs5BjapiZCxhY7awM"
 #prefixdo wywolania bota
-eventBot=commands.Bot(command_prefix='$')
+eventBot=commands.Bot(command_prefix='$', intents=intents)
 
 @eventBot.event
 async def on_ready():
@@ -50,18 +53,69 @@ async def deleteEvent(ctx,name,date,time,place):
 async def showDay(ctx,day,Id):
     newinstance = Database()
     Events = newinstance.getDay(day,Id)
-    for e in Events[0]:
-        await ctx.send(e[0] + " " + e[1].strftime("%Y-%m-%d") + " " + str(e[2]) + " " + str(e[3])
+    if not Events[0]:
+        await ctx.send('Tego dnia nie ma żadnych zajęć.')
+    else:
+        for e in Events[0]:
+            await ctx.send(e[0] + " " + e[1].strftime("%Y-%m-%d") + " " + str(e[2]) + " " + str(e[3])
                        + " " + e[4])
 @eventBot.command()
 async def showWeek(ctx,day,Id):
     newinstance = Database()
     Events = newinstance.getWeekd(day,Id)
-    for e in Events[0]:
-        await ctx.send(e[0] + " " + e[1].strftime("%Y-%m-%d") + " " + str(e[2]) + " " + str(e[3])
+    if not Events[0]:
+        await ctx.send('W tym nie ma żadnych zajęć.')
+    else:
+        for e in Events[0]:
+            await ctx.send(e[0] + " " + e[1].strftime("%Y-%m-%d") + " " + str(e[2]) + " " + str(e[3])
                        + " " + e[4])
+@eventBot.command()
+async def freeDays(ctx, firstDate, lastDate, Id):
+    newinstance = Database()
+    Events = newinstance.getFreeDays(firstDate, lastDate, Id)
+    if not Events:
+        await ctx.send('Przykro mi, w tym okresie nie masz dni wolnych :(.')
+    else:
+        await ctx.send(Events)
+@eventBot.command()
+async def freeTime(ctx, date, Id):
+    newinstance = Database()
+    Events = newinstance.getFreeTime(date, Id)
+    if not Events:
+        await ctx.send('Przykro mi, w tym okresie nie masz czasu wolnego :(.')
+    else:
+        await ctx.send(Events)
 
+@eventBot.command()
+async def message_all(ctx, *, args=None):
+    if args !=None:
+        channel = eventBot.get_channel(899711418276917309)
+        members = channel.guild.members
+        print("Lista memberow text")
+        #members = ctx.guild.members
+        for member in members:
+            print(member)
+            try:
+                await member.send(args)
+            except:
+                print("Didn't work for this member (maybe member is a bot).")
+    else:
+        await ctx.send("Please provide an argument!")
 
+@eventBot.command()
+async def attach_all(ctx, *, args=None):
+    if args !=None:
+        channel = eventBot.get_channel(899711418276917309)
+        members = channel.guild.members
+        print("Lista memberow jpg")
+        for member in members:
+            print(member)
+            try:
+                await member.send(file=discord.File(args))
+            except:
+                print("Didn't work for this member (maybe member is a bot).")
+    else:
+        await ctx.send("Please provide a filepath!")
 
 
 eventBot.run(TOKEN)
