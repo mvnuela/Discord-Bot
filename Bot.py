@@ -11,7 +11,24 @@ intents = discord.Intents.default()
 intents.members = True
 TOKEN="OTExMzQ3Mzk0MjU0MzQwMTI3.YZgEZg.uGCZhDpqjURs5BjapiZCxhY7awM"
 #prefixdo wywolania bota
-eventBot=commands.Bot(command_prefix='$', intents=intents)
+eventBot=commands.Bot(command_prefix='$', intents=intents,help_command=None)
+
+@eventBot.command()
+async def help(context):
+    polecenia="""DATA FORMAT - YYYY-MM-DD\n
+$calendar file.ics - this command allows to import your calendar\n
+$addEvent name date time place - this command allows to add an event\n
+$deleteEvent name date time place - this command allows to delete an event\n
+$showEvents firstDate lastDate - this command allows to check out your events between first and last date\n
+$showDay day - this comamnd allows to check out your events during  'day' \n
+$showWeek day - this comamnd allows to check out your events during week starts on 'day' \n
+$freeDays firstDate lastDate - this command allows to check out free days between first and last date\n
+$freeTime data - this command allows to check out if you have any free time on 'data'\n
+$messageAll message - this command allows to send all members private message\n
+$attachAll file -this command allows to send attchement in private message to all members """
+
+
+    await context.send(polecenia)
 
 @eventBot.event
 async def on_ready():
@@ -87,7 +104,7 @@ async def freeTime(ctx, date, Id):
         await ctx.send(Events)
 
 @eventBot.command()
-async def message_all(ctx, *, args=None):
+async def messageAll(ctx, *, args=None):
     if args !=None:
         channel = eventBot.get_channel(899711418276917309)
         members = channel.guild.members
@@ -103,7 +120,7 @@ async def message_all(ctx, *, args=None):
         await ctx.send("Please provide an argument!")
 
 @eventBot.command()
-async def attach_all(ctx, *, args=None):
+async def attachAll(ctx, *, args=None):
     if args !=None:
         channel = eventBot.get_channel(899711418276917309)
         members = channel.guild.members
