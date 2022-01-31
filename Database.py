@@ -9,10 +9,10 @@ class Database:
     def __init__(self):
         self.conn = None
         try:
-            self.conn = mysql.connector.connect(host='localhost',
-                                           database='discordbot',
-                                           user='BotUser',
-                                           password='123')
+            self.conn = mysql.connector.connect(host='s130.cyber-folks.pl',
+                                           database='daoehremvz_bot',
+                                           user='daoehremvz_bot',
+                                           password='96-OtQKrr7-DK(JC')
             if self.conn.is_connected():
                 print('Connected to MySQL database')
 
