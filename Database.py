@@ -388,6 +388,11 @@ class Database:
             return fTime
         pass
 
+    def getUserId(self):
+        Id=1
+        return Id
+
+
     def addClasses(self, lesson, date, timeStart, timeEnd, place):
         succes = 1
         query = "INSERT INTO classes(Name,Date,TimeStart,TimeEnd,Place) " \

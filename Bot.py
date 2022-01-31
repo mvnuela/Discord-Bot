@@ -71,8 +71,9 @@ async def deleteEvent(ctx,name,date,time,place):
         await ctx.send('Wskazane wydarzenie nie znajduje sie w bazie')
 
 @eventBot.command()
-async def showDay(ctx,day,Id):
+async def showDay(ctx,day):
     newinstance = Database()
+    Id=newinstance.getUserId()
     Events = newinstance.getDay(day,Id)
     if not Events[0]:
         await ctx.send('Tego dnia nie ma żadnych zajęć.')
@@ -81,8 +82,9 @@ async def showDay(ctx,day,Id):
             await ctx.send(e[0] + " " + e[1].strftime("%Y-%m-%d") + " " + str(e[2]) + " " + str(e[3])
                        + " " + e[4])
 @eventBot.command()
-async def showWeek(ctx,day,Id):
+async def showWeek(ctx,day):
     newinstance = Database()
+    Id = newinstance.getUserId()
     Events = newinstance.getWeekd(day,Id)
     if not Events[0]:
         await ctx.send('W tym nie ma żadnych zajęć.')
@@ -91,16 +93,18 @@ async def showWeek(ctx,day,Id):
             await ctx.send(e[0] + " " + e[1].strftime("%Y-%m-%d") + " " + str(e[2]) + " " + str(e[3])
                        + " " + e[4])
 @eventBot.command()
-async def freeDays(ctx, firstDate, lastDate, Id):
+async def freeDays(ctx, firstDate, lastDate):
     newinstance = Database()
+    Id = newinstance.getUserId()
     Events = newinstance.getFreeDays(firstDate, lastDate, Id)
     if not Events:
         await ctx.send('Przykro mi, w tym okresie nie masz dni wolnych :(.')
     else:
         await ctx.send(Events)
 @eventBot.command()
-async def freeTime(ctx, date, Id):
+async def freeTime(ctx, date):
     newinstance = Database()
+    Id = newinstance.getUserId()
     Events = newinstance.getFreeTime(date, Id)
     if not Events:
         await ctx.send('Przykro mi, w tym okresie nie masz czasu wolnego :(.')
@@ -108,8 +112,9 @@ async def freeTime(ctx, date, Id):
         await ctx.send(Events)
 
 @eventBot.command()
-async def freeTimeForFew(ctx, date, Id):
+async def freeTimeForFew(ctx, date):
     newinstance = Database()
+    Id = newinstance.getUserId()
     Events = newinstance.getFreeTimeForFew(date, Id)
     if not Events:
         await ctx.send('Przykro mi, w tym okresie nie macie czasu wolnego :(.')
