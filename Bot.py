@@ -1,3 +1,7 @@
+import asyncio
+from asyncio import sleep
+from datetime import datetime, timedelta
+
 import discord
 from discord import channel
 from discord.ext import commands
@@ -143,5 +147,36 @@ async def attachAll(ctx, *, args=None):
     else:
         await ctx.send("Please provide a filepath!")
 
+@eventBot.command()
+async def remainder(ctx):
+    now = datetime.now()
+    d = now + timedelta(days = 2)
+    print("now")
+    print(now)
+    print("future")
+    print(d)
+
+    newinstance = Database()
+    Events = newinstance.getEvents(now,d)
+    print(Events)
+    if not Events:
+        await ctx.send('Jutro nie ma żadnych wydarzeń.')
+    else:
+        await ctx.send('Przygotuj się na: ')
+        for e in Events:
+            await ctx.send(e[0] + " " + e[1].strftime("%Y-%m-%d") + " " + str(e[2]) + " " + e[3])
+
+    while True:
+        await sleep(86400)#86400
+        now = datetime.now()
+        d = now + timedelta(days = 2)
+        newinstance = Database()
+        Events = newinstance.getEvents(now, d)
+        if not Events:
+            await ctx.send('Jutro nie ma żadnych wydarzeń.')
+        else:
+            await ctx.send('Przygotuj się na: ')
+            for e in Events:
+                await ctx.send(e[0] + " " + e[1].strftime("%Y-%m-%d") + " " + str(e[2]) + " " + e[3])
 
 eventBot.run(TOKEN)

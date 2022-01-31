@@ -297,7 +297,7 @@ CREATE TABLE IF NOT EXISTS `events` (
   PRIMARY KEY (`Id`),
   KEY `HostId` (`HostId`),
   CONSTRAINT `events_ibfk_1` FOREIGN KEY (`HostId`) REFERENCES `users` (`Id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
 -- Zrzucanie danych dla tabeli discordbot.events: ~4 rows (około)
 /*!40000 ALTER TABLE `events` DISABLE KEYS */;
@@ -305,7 +305,10 @@ INSERT INTO `events` (`Id`, `Name`, `Date`, `Time`, `Place`, `HostId`) VALUES
 	(3, 'kolokwium', '2022-01-10', '12:12:12', 'Wroclaw', NULL),
 	(4, 'kolokwium', '2022-01-22', '12:12:12', 'Wroclaw', NULL),
 	(7, 'kolokwium', '2021-11-19', '12:00:00', 'c1', NULL),
-	(8, 'kolokwium', '2022-01-15', '13:00:00', 'C-1', NULL);
+	(8, 'kolokwium', '2022-01-15', '13:00:00', 'C-1', NULL),
+	(9, 'kolokwium', '2022-02-01', '10:00:00', 'online', NULL),
+	(10, 'egzamin', '2022-02-02', '10:00:00', 'online', NULL),
+	(11, 'egzamin', '2022-02-03', '13:00:00', 'online', NULL);
 /*!40000 ALTER TABLE `events` ENABLE KEYS */;
 
 -- Zrzut struktury procedura discordbot.showDay
