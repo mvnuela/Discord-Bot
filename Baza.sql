@@ -265,13 +265,25 @@ CREATE TABLE IF NOT EXISTS `classesusers` (
   CONSTRAINT `classesusers_ibfk_2` FOREIGN KEY (`UserId`) REFERENCES `users` (`Id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Zrzucanie danych dla tabeli discordbot.classesusers: ~4 rows (około)
+-- Zrzucanie danych dla tabeli discordbot.classesusers: ~16 rows (około)
 /*!40000 ALTER TABLE `classesusers` DISABLE KEYS */;
 INSERT INTO `classesusers` (`ClassId`, `UserId`) VALUES
 	(1, 1),
 	(3, 1),
 	(4, 1),
-	(2, 1);
+	(2, 1),
+	(1, 2),
+	(3, 2),
+	(5, 2),
+	(6, 2),
+	(7, 2),
+	(8, 2),
+	(18, 1),
+	(20, 1),
+	(25, 1),
+	(18, 2),
+	(19, 2),
+	(26, 2);
 /*!40000 ALTER TABLE `classesusers` ENABLE KEYS */;
 
 -- Zrzut struktury tabela discordbot.events
@@ -353,18 +365,37 @@ WHERE classes.Date >= d AND classes.Date <= d+7 AND users.Id = id;
 END//
 DELIMITER ;
 
+-- Zrzut struktury procedura discordbot.showWeekForFew
+DELIMITER //
+CREATE PROCEDURE `showWeekForFew`(
+	IN `d` DATE,
+	IN `somestring` VARCHAR(255)
+)
+BEGIN
+
+	 SELECT DISTINCT classes.Name,  classes.Date, classes.TimeStart, classes.TimeEnd, classes.Place
+	 	FROM classes INNER JOIN classesusers 
+	 		ON classesusers.ClassId = classes.Id 
+	 	INNER JOIN users ON
+			users.Id = classesusers.UserId 
+	 	WHERE classes.Date >= d AND classes.Date <= d+7 AND FIND_IN_SET (users.Id ,somestring);
+
+END//
+DELIMITER ;
+
 -- Zrzut struktury tabela discordbot.users
 CREATE TABLE IF NOT EXISTS `users` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `Nick` varchar(90) NOT NULL,
   PRIMARY KEY (`Id`),
   UNIQUE KEY `Nick` (`Nick`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
--- Zrzucanie danych dla tabeli discordbot.users: ~0 rows (około)
+-- Zrzucanie danych dla tabeli discordbot.users: ~2 rows (około)
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` (`Id`, `Nick`) VALUES
-	(1, 'Cybulski');
+	(1, 'Cybulski'),
+	(2, 'malgi');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
