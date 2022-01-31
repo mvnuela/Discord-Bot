@@ -288,6 +288,106 @@ class Database:
             return fTime
         pass
 
+    def getFreeTimeForFew(self, day, Idies):
+        try:
+
+            cursor = self.conn.cursor(True)
+            print("Idies")
+            print(Idies)
+            cursor.callproc('showWeekForFew', [day,Idies])
+            self.conn.commit()
+            print("Get from database")
+            ans = list()
+            for result in cursor.stored_results():
+                ans.append(result.fetchall())
+
+            takentime = list()
+            for i in range(len(ans[0])):
+                takentime.append(ans[0][i])
+
+            #adding nights
+            for x in range(7):
+                night = list()
+                d = date.fromisoformat(day)
+                d += timedelta(days=x)
+                start_night = timedelta(seconds=82800)
+                end_night = timedelta(seconds=28800)
+                night = ('spanko',d,start_night,end_night,'śpiulkolot')
+                takentime.append(night)
+
+            takentime = sorted(takentime, key=lambda x: (x[1], x[2]))
+            print("takentime with nights")
+            for i in range(len(takentime)):
+                print(takentime[i])
+
+            #setting pointers of timeslot
+            start = [date.fromisoformat(day), timedelta(seconds=32400)]
+            end = copy.deepcopy(start)
+
+            k = 0 #pointer on timeoccupied in takentime
+            timeSlots = list()
+            while (end[0] <= (date.fromisoformat(day)+timedelta(days=6))) & (end[1] <= start_night):
+                if (start[1] >= takentime[k][2]) & (start[1] <= takentime[k][3]):
+                    print("in")
+                    start[1] = takentime[k][3]
+                    k += 1
+                    end[0] = takentime[k][1]
+                    end[1] = takentime[k][2]
+                    print("start")
+                    print(start)
+                    print("end")
+                    print(end)
+                elif start[1] < takentime[k][2]:
+                    print("before")
+                    print(takentime[k][2])
+                    end[1] = takentime[k][2]
+                    print("start")
+                    print(start)
+                    print("end")
+                    print(end)
+                else:
+                    print("after")
+                    k += 1
+                    end[0] = takentime[k][1]
+                    end[1] = takentime[k][2]
+                    print("start")
+                    print(start)
+                    print("end")
+                    print(end)
+
+                print("start")
+                print(start)
+                print("end")
+                print(end)
+                print("adding slot: ")
+                #sprawdź długość slota
+                print(takentime[k][1], start[1], end[1])
+                timeSlot = [takentime[k][1], start[1], end[1]]
+                timeSlots.append(timeSlot)
+                if takentime[k][2] > takentime[k][3]:
+                    start[0] = takentime[k][1] + timedelta(days=1)
+                else:
+                    start[0] = takentime[k][1]
+                start[1] = takentime[k][3]
+                end = copy.deepcopy(start)
+                k += 1
+
+            fTime = ''
+            for i in range(len(timeSlots)):
+                print(timeSlots[i])
+                fTime += timeSlots[i][0].strftime("%Y-%m-%d") + " " + str(timeSlots[i][1]) + " " + str(timeSlots[i][2])
+                fTime += "\n"
+
+        except Error as error:
+            print(error)
+            print("Something wrong")
+
+        finally:
+            cursor.close()
+            self.conn.close()
+            return fTime
+        pass
+
     def addClasses(self, lesson, date, timeStart, timeEnd, place):
         succes = 1
         query = "INSERT INTO classes(Name,Date,TimeStart,TimeEnd,Place) " \

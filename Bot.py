@@ -104,6 +104,15 @@ async def freeTime(ctx, date, Id):
         await ctx.send(Events)
 
 @eventBot.command()
+async def freeTimeForFew(ctx, date, Id):
+    newinstance = Database()
+    Events = newinstance.getFreeTimeForFew(date, Id)
+    if not Events:
+        await ctx.send('Przykro mi, w tym okresie nie macie czasu wolnego :(.')
+    else:
+        await ctx.send(Events)
+
+@eventBot.command()
 async def messageAll(ctx, *, args=None):
     if args !=None:
         channel = eventBot.get_channel(899711418276917309)
