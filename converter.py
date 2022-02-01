@@ -50,21 +50,5 @@ class converter:
             timeEnd1List[0] = strts2List[0]
             timeEnd1List[1] = strts2List[1]
             timeEnd1Print = "".join(timeEnd1List)
-            print(lesson + "|" + date1 + "|" + timeStart1Print + "|" + timeEnd1Print + "|" + location)
 
             newinstance.addClasseswithUser( lesson, date1, timeStart1Print, timeEnd1Print, location)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
