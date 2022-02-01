@@ -29,7 +29,30 @@ class converter:
             summaryPosition2 = x.find("TRANSP:") + 1
             lesson = x[summaryPosition1:summaryPosition2]
 
-            newinstance.addClasseswithUser( lesson, date1, timeStart1, timeEnd1, location)
+            ts1 = timeStart1[0] + timeStart1[1]
+            intts1 = int(ts1) + 2
+            strts1 = str(intts1)
+            if intts1 < 10:
+                strts1 = '0' + strts1
+            timeStart1List = list(timeStart1)
+            strts1List = list(strts1)
+            timeStart1List[0] = strts1List[0]
+            timeStart1List[1] = strts1List[1]
+            timeStart1Print = "".join(timeStart1List)
+
+            ts2 = timeEnd1[0] + timeEnd1[1]
+            intts2 = int(ts2) + 2
+            strts2 = str(intts2)
+            if intts2 < 10:
+                strts2 = '0' + strts2
+            timeEnd1List = list(timeEnd1)
+            strts2List = list(strts2)
+            timeEnd1List[0] = strts2List[0]
+            timeEnd1List[1] = strts2List[1]
+            timeEnd1Print = "".join(timeEnd1List)
+            print(lesson + "|" + date1 + "|" + timeStart1Print + "|" + timeEnd1Print + "|" + location)
+
+            newinstance.addClasseswithUser( lesson, date1, timeStart1Print, timeEnd1Print, location)
 
 
 
