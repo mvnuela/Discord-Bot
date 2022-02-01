@@ -5,7 +5,7 @@ class converter:
         self.data = d
 
     def ics(self, data):
-        x = data.replace("//r//n", "")
+        x = data.replace("\n", "")
         icsList = x.split("BEGIN:VEVENT")
         for i in range(1, len(icsList)):
             newinstance = Database()
