@@ -49,11 +49,14 @@ async def addEvent(ctx,name,date,time,place):
 async def calendar(ctx):
     if ctx.message.attachments[0].filename.endswith(".ics"):
         fil=None
+        newinstance = Database()
         name=ctx.message.attachments[0].filename
         data = await ctx.message.attachments[0].read()
         data1=str(data)
         Con = converter(data1)
         Con.ics(data1) #przerzut do konwersji(w konwersji też jest dodawanie do bazy)
+
+
 
 @eventBot.command()
 async def showEvents(ctx, firstDate, lastDate):

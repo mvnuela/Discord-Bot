@@ -29,7 +29,7 @@ class converter:
             summaryPosition2 = x.find("TRANSP:") + 1
             lesson = x[summaryPosition1:summaryPosition2]
 
-            newinstance.addClasses( lesson, date1, timeStart1, timeEnd1, location)
+            newinstance.addClasseswithUser( lesson, date1, timeStart1, timeEnd1, location)
 
 
 
