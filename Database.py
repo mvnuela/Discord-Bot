@@ -388,7 +388,7 @@ class Database:
             return fTime
         pass
 
-    def getUserId(self,nickname):
+    def getUserId(self, nickname):
         succes = 1
         print(nickname)
         query = "SELECT Id FROM users WHERE Nick = %s"
@@ -440,8 +440,8 @@ class Database:
             self.conn.close()
             return succes
 
-    def addClasseswithUser(self, lesson, date, timeStart, timeEnd, place):
-        Id = self.getUserId()
+    def addClasseswithUser(self, lesson, date, timeStart, timeEnd, place, nickname):
+        Id = self.getUserId(nickname)
         succes = 1
         query = "INSERT INTO classes(Name,Date,TimeStart,TimeEnd,Place) " \
                 "VALUES(%s,%s,%s,%s,%s)"

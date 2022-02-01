@@ -87,7 +87,8 @@ async def deleteEvent(ctx,name,date,time,place):
 @eventBot.command()
 async def showDay(ctx,day):
     newinstance = Database()
-    Id=newinstance.getUserId()
+    nickname = ctx.message.author.name
+    Id=newinstance.getUserId(nickname)
     Events = newinstance.getDay(day,Id)
     if not Events[0]:
         await ctx.send('Tego dnia nie ma żadnych zajęć.')
@@ -98,7 +99,8 @@ async def showDay(ctx,day):
 @eventBot.command()
 async def showWeek(ctx,day):
     newinstance = Database()
-    Id = newinstance.getUserId()
+    nickname = ctx.message.author.name
+    Id = newinstance.getUserId(nickname)
     Events = newinstance.getWeekd(day,Id)
     if not Events[0]:
         await ctx.send('W tym nie ma żadnych zajęć.')
@@ -118,7 +120,8 @@ async def freeDays(ctx, firstDate, lastDate):
 @eventBot.command()
 async def freeTime(ctx, date):
     newinstance = Database()
-    Id = newinstance.getUserId()
+    nickname = ctx.message.author.name
+    Id = newinstance.getUserId(nickname)
     Events = newinstance.getFreeTime(date, Id)
     if not Events:
         await ctx.send('Przykro mi, w tym okresie nie masz czasu wolnego :(.')
@@ -128,7 +131,8 @@ async def freeTime(ctx, date):
 @eventBot.command()
 async def freeTimeForFew(ctx, date):
     newinstance = Database()
-    Id = newinstance.getUserId()
+    nickname = ctx.message.author.name
+    Id = newinstance.getUserId(nickname)
     Events = newinstance.getFreeTimeForFew(date, Id)
     if not Events:
         await ctx.send('Przykro mi, w tym okresie nie macie czasu wolnego :(.')
