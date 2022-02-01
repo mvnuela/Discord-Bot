@@ -388,9 +388,26 @@ class Database:
             return fTime
         pass
 
-    def getUserId(self):
-        Id=1
-        return Id
+    def getUserId(self,nickname):
+        succes = 1
+        print(nickname)
+        query = "SELECT Id FROM users WHERE Nick = %s"
+        args = (nickname , )
+        id = None
+        try:
+            cursor = self.conn.cursor(True)
+            cursor.execute(query, args)
+            self.conn.commit()
+            pom = list(cursor.fetchall())
+            id = pom[0]
+            id = id[0]
+
+        except Error as error:
+            print(error)
+        finally:
+            cursor.close()
+            self.conn.close()
+            return id
 
 
     def addClasses(self, lesson, date, timeStart, timeEnd, place):

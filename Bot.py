@@ -34,6 +34,7 @@ $attachAll file -this command allows to send attchement in private message to al
 
     await context.send(polecenia)
 
+
 @eventBot.event
 async def on_ready():
     print('Connected to bot: {}'.format(eventBot.user.name))
@@ -45,6 +46,16 @@ async def addEvent(ctx,name,date,time,place):
         await ctx.send('Dodano wydarzenie '+name+" "+date+" "+time+ " "+place)
     else:
         await ctx.send("Nie udało się dodać wydarzenia")
+@eventBot.command()
+async def id(ctx):
+    newinstance = Database()
+    username = ctx.message.author.name
+    id =  newinstance.getUserId(username)
+    print(id)
+    if(id == None ):
+        await ctx.send( "Twoje id  jest puste ")
+    else:
+        await ctx.send("Twoje id nie jest puste ")
 @eventBot.command()
 async def calendar(ctx):
     if ctx.message.attachments[0].filename.endswith(".ics"):
