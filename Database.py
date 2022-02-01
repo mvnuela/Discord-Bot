@@ -388,6 +388,11 @@ class Database:
             return fTime
         pass
 
+    def getUserId(self):
+        Id=1
+        return Id
+
+
     def addClasses(self, lesson, date, timeStart, timeEnd, place):
         succes = 1
         query = "INSERT INTO classes(Name,Date,TimeStart,TimeEnd,Place) " \
@@ -403,6 +408,47 @@ class Database:
 
             if cursor.lastrowid:
                 print('last insert id', cursor.lastrowid)
+            else:
+                print('last insert id not found')
+
+            self.conn.commit()
+            print("Added to database")
+        except Error as error:
+            print(error)
+            print("Cannot add to database")
+            succes = 0
+
+        finally:
+            cursor.close()
+            self.conn.close()
+            return succes
+
+    def addClasseswithUser(self, lesson, date, timeStart, timeEnd, place):
+        Id = self.getUserId()
+        succes = 1
+        query = "INSERT INTO classes(Name,Date,TimeStart,TimeEnd,Place) " \
+                "VALUES(%s,%s,%s,%s,%s)"
+        query2 = "INSERT INTO classesusers (ClassId, UserId)" \
+                "VALUES(%s,%s)"
+        args = (lesson, date, timeStart, timeEnd, place)
+
+        try:
+          #  db_config = read_db_config()
+          #  conn = MySQLConnection(**db_config)
+
+            cursor = self.conn.cursor()
+            cursor.execute(query, args)
+            CId = cursor.lastrowid
+            try:
+                args2 = (CId, Id)
+                cursor.execute(query2,args2)
+            except Error as error:
+                print(error)
+                print("Cannot add to table classeusers")
+
+
+            if CId:
+                print('last insert id', CId)
             else:
                 print('last insert id not found')
 
