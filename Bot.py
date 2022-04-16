@@ -13,7 +13,7 @@ from converter import converter
 #intents = discord.Intents.all()
 intents = discord.Intents.default()
 intents.members = True
-#TOKEN="OTExMzQ3Mzk0MjU0MzQwMTI3.YZgEZg.uGCZhDpqjURs5BjapiZCxhY7awM"
+
 #prefixdo wywolania bota
 eventBot=commands.Bot(command_prefix='$', intents=intents,help_command=None)
 
